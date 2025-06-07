@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic Carousel: Advanced Excel Data Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .carousel-wrapper {
+            width: 100%;
+            max-width: 1100px;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 620px;
+            margin-top: 1rem;
+            overflow: hidden;
+            border-radius: 1rem;
+            background-color: #ffffff;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+        }
+        .progress-bar-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            z-index: 20;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #00A6FB, #0582CA);
+            transition: width 0.4s ease-out;
+            border-radius: 0 4px 4px 0;
+        }
+        .carousel-slide {
+            position: absolute;
+            top: 8px; /* Offset for progress bar */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 8px);
+            padding: 2.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s;
+        }
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        .carousel-slide.exiting {
+            transform: translateX(-20px);
+        }
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 99, 148, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .nav-btn:hover {
+            background-color: #006494;
+            transform: translateY(-50%) scale(1.1);
+        }
+        #prevBtn { left: 1.5rem; }
+        #nextBtn { right: 1.5rem; }
+        .indicator-container {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .indicator-dot:hover { transform: scale(1.2); }
+        .indicator-dot.active { background-color: #00A6FB; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 1.5rem auto 0 auto;
+            height: 320px;
+        }
+        h1 {
+            background: linear-gradient(45deg, #006494, #00A6FB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 800; text-align: center; color: #006494; margin-bottom: 2rem; }
+        h3 { font-size: 1.5rem; font-weight: 700; color: #0582CA; margin-bottom: 1rem; }
+        .kpi-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            border-bottom: 4px solid #00A6FB;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 166, 251, 0.15);
+        }
+        .takeaway-list li {
+            background-color: #eaf8ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-left: 4px solid #00A6FB;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="carousel-wrapper">
+        <header class="text-center mb-4">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Advanced Excel Visualization</h1>
+            <p class="text-lg text-gray-600">An Interactive Guide</p>
+        </header>
+
+        <div id="carousel-container" class="carousel-container">
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            
+            <!-- Slide 1: Welcome -->
+            <div class="carousel-slide flex flex-col items-center justify-center text-center">
+                <svg class="w-24 h-24 text-[#00A6FB] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                <h2 class="text-4xl">Welcome to the Guide</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto mt-4">Discover how to transform data into compelling visual narratives. Use the arrows to navigate.</p>
+            </div>
+
+            <!-- Slide 2: Power of Visuals -->
+            <div class="carousel-slide">
+                <h2>The Power of Visual Communication</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                    <div class="kpi-card"><svg class="w-12 h-12 text-[#00A6FB] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg><p class="text-5xl font-bold text-[#006494] counter" data-target="90">0%</p><p class="mt-1 text-gray-600">Of information sent to the brain is visual.</p></div>
+                    <div class="kpi-card"><svg class="w-12 h-12 text-[#00A6FB] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg><p class="text-5xl font-bold text-[#006494] counter" data-target="60">0K</p><p class="mt-1 text-gray-600">Times faster, visuals are processed vs. text.</p></div>
+                    <div class="kpi-card"><svg class="w-12 h-12 text-[#00A6FB] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"></path></svg><p class="text-5xl font-bold text-[#006494] counter" data-target="42">0%</p><p class="mt-1 text-gray-600">Better, presenters using visuals persuade.</p></div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Design Principles -->
+            <div class="carousel-slide">
+                 <h2>Design for Clarity and Impact</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-4"><div><h3>Maximize the Data-Ink Ratio</h3><p class="text-gray-600 mb-6">Remove extraneous visual elements to focus on the data. More data, less "junk," equals clearer communication.</p><svg viewBox="0 0 300 100" class="w-full"><text x="0" y="15" font-family="Inter" font-size="12" font-weight="600" fill="#374151">Low Data-Ink (Cluttered)</text><rect x="0" y="25" width="300" height="20" rx="10" fill="#e5e7eb"/><rect x="0" y="25" width="180" height="20" rx="10" fill="#E94F37"/><text x="0" y="70" font-family="Inter" font-size="12" font-weight="600" fill="#374151">High Data-Ink (Clear)</text><rect x="0" y="80" width="300" height="20" rx="10" fill="#e5e7eb"/><rect x="0" y="80" width="285" height="20" rx="10" fill="#00A6FB"/></svg></div><div><h3>Apply Gestalt Principles</h3><p class="text-gray-600 mb-4">Use visual perception principles to create intuitive charts that guide understanding naturally.</p><ul class="list-disc list-inside space-y-2 text-gray-700"><li><span class="font-semibold">Proximity & Similarity:</span> Group related items.</li><li><span class="font-semibold">Continuity:</span> Guide the eye with smooth lines.</li><li><span class="font-semibold">Figure-Ground:</span> Make data the clear focus.</li></ul></div></div>
+            </div>
+
+            <!-- Slide 4: Chart Selection -->
+            <div class="carousel-slide">
+                 <h2>Choosing the Right Chart</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"><div><h3 class="text-center">Bar & Line Charts</h3><p class="text-gray-600 text-center mb-4">Use bars for comparing categories and lines for tracking trends over time.</p><div class="chart-container"><canvas id="barChart"></canvas></div><div class="chart-container mt-8"><canvas id="lineChart"></canvas></div></div><div><h3 class="text-center">Doughnut & Scatter Charts</h3><p class="text-gray-600 text-center mb-4">Use doughnuts for proportions and scatter plots to find correlations.</p><div class="chart-container"><canvas id="doughnutChart"></canvas></div><div class="chart-container mt-8"><canvas id="scatterChart"></canvas></div></div></div>
+            </div>
+
+            <!-- Slide 5: Specialized Charts -->
+            <div class="carousel-slide">
+                <h2>Visualizing Processes</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"><div><h3>Waterfall Chart</h3><p class="text-gray-600 mb-4">Illustrates the cumulative effect of sequential positive and negative values. Perfect for financial statements.</p><div class="chart-container h-80"><canvas id="waterfallChart"></canvas></div></div><div><h3>Funnel Chart</h3><p class="text-gray-600 mb-4">Shows the progressive reduction of data through sequential stages. Ideal for visualizing sales pipelines.</p><div class="chart-container h-80"><canvas id="funnelChart"></canvas></div></div></div>
+            </div>
+
+            <!-- Slide 6: Dashboard Flow -->
+            <div class="carousel-slide flex flex-col items-center justify-center">
+                <h2>Building an Interactive Narrative</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">Transform static charts into a dynamic dashboard by connecting data to interactive controls.</p>
+                <svg viewBox="0 0 300 350" class="w-full max-w-sm"><g class="flow-step"><rect x="25" y="0" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#bae6fd" stroke-width="2"/><text x="150" y="35" text-anchor="middle" font-family="Inter" font-weight="600" fill="#006494">1. Data Source (Excel Table)</text></g><g class="flow-arrow"><line x1="150" y1="65" x2="150" y2="85" stroke="#0582CA" stroke-width="2"/><polygon points="145,85 155,85 150,95" fill="#0582CA"/></g><g class="flow-step"><rect x="25" y="95" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#bae6fd" stroke-width="2"/><text x="150" y="130" text-anchor="middle" font-family="Inter" font-weight="600" fill="#006494">2. PivotTables (Summarize)</text></g><g class="flow-arrow"><line x1="150" y1="160" x2="150" y2="180" stroke="#0582CA" stroke-width="2"/><polygon points="145,180 155,180 150,190" fill="#0582CA"/></g><g class="flow-step"><rect x="25" y="190" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#bae6fd" stroke-width="2"/><text x="150" y="225" text-anchor="middle" font-family="Inter" font-weight="600" fill="#006494">3. PivotCharts (Visualize)</text></g><g class="flow-arrow"><line x1="150" y1="255" x2="150" y2="275" stroke="#0582CA" stroke-width="2"/><polygon points="145,275 155,275 150,285" fill="#0582CA"/></g><g class="flow-step"><rect x="25" y="285" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#bae6fd" stroke-width="2"/><text x="150" y="320" text-anchor="middle" font-family="Inter" font-weight="600" fill="#006494">4. Slicers (Interact)</text></g></svg>
+            </div>
+
+            <!-- Slide 7: BI Tools -->
+            <div class="carousel-slide">
+                <h2>Excel in the Broader BI Ecosystem</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">Excel is versatile, but for large datasets and advanced interactivity, specialized BI platforms offer more power.</p>
+                <div class="overflow-x-auto"><table class="w-full min-w-max text-left bg-white rounded-lg shadow-md"><thead class="bg-[#006494] text-white"><tr><th class="p-4 font-semibold">Feature</th><th class="p-4 font-semibold">Excel</th><th class="p-4 font-semibold">Power BI</th><th class="p-4 font-semibold">Tableau</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50 transition-colors"><td class="p-4 font-semibold">Data Capacity</td><td class="p-4 text-[#E94F37] font-medium">Limited</td><td class="p-4 text-[#FBB13C] font-medium">High</td><td class="p-4 text-[#00A6FB] font-medium">Very High</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="p-4 font-semibold">Interactivity</td><td class="p-4 text-[#E94F37] font-medium">Basic</td><td class="p-4 text-[#FBB13C] font-medium">High</td><td class="p-4 text-[#00A6FB] font-medium">Very High</td></tr><tr class="hover:bg-gray-50 transition-colors"><td class="p-4 font-semibold">Learning Curve</td><td class="p-4 text-[#00A6FB] font-medium">Low</td><td class="p-4 text-[#FBB13C] font-medium">Moderate</td><td class="p-4 text-[#E94F37] font-medium">High</td></tr></tbody></table></div>
+            </div>
+            
+            <!-- Slide 8: Key Takeaways -->
+            <div class="carousel-slide">
+                <h2>Key Takeaways</h2>
+                <ul class="takeaway-list mt-8 text-gray-700 font-medium max-w-3xl mx-auto">
+                    <li><svg class="w-8 h-8 text-[#00A6FB] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Choose the right chart for your story: bars for comparisons, lines for trends, and pies for simple parts of a whole.</span></li>
+                    <li><svg class="w-8 h-8 text-[#00A6FB] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Clarity is king: Remove chart junk, use color purposefully, and ensure everything is clearly labeled.</span></li>
+                    <li><svg class="w-8 h-8 text-[#00A6FB] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Interactivity enhances exploration: Use Slicers and other tools to allow users to filter and discover insights.</span></li>
+                    <li><svg class="w-8 h-8 text-[#00A6FB] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Know when to level up: For massive datasets, consider dedicated BI tools like Power BI or Tableau.</span></li>
+                </ul>
+            </div>
+
+
+            <button id="prevBtn" class="nav-btn">&#10094;</button>
+            <button id="nextBtn" class="nav-btn">&#10095;</button>
+            <div id="indicatorContainer" class="indicator-container"></div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicatorContainer = document.getElementById('indicatorContainer');
+        const progressBar = document.getElementById('progressBar');
+        let currentSlide = 0;
+        let chartInstances = {};
+        const vibrantPalette = ['#00A6FB', '#FBB13C', '#E94F37', '#0582CA', '#006494'];
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 1000, easing: 'easeOutQuart' },
+            onHover: (event, chartElement) => { event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default'; },
+            plugins: { legend: { display: false } }
+        };
+
+        function animateCountUp(el) {
+            const target = +el.getAttribute('data-target');
+            if (el.animated) return;
+            el.animated = true;
+            let count = 0;
+            const duration = 1500;
+            const stepTime = Math.max(1, Math.floor(duration / target));
+            const timer = setInterval(() => {
+                count++;
+                const suffix = el.innerText.includes('K') ? 'K' : '%';
+                el.innerText = count + suffix;
+                if (count >= target) { clearInterval(timer); el.innerText = target + suffix; }
+            }, stepTime);
+        }
+        
+        function createChart(chartId) {
+            if (chartInstances[chartId]) return;
+            const ctx = document.getElementById(chartId)?.getContext('2d');
+            if (!ctx) return;
+            let chartConfig;
+            
+            switch (chartId) {
+                case 'barChart': chartConfig = { type: 'bar', data: { labels: ['Product A', 'Product B', 'Product C', 'Product D'], datasets: [{ label: 'Sales (k)', data: [120, 190, 80, 150], backgroundColor: vibrantPalette[0], hoverBackgroundColor: vibrantPalette[3] }] }, options: { ...commonChartOptions, scales: { y: { beginAtZero: true } } } }; break;
+                case 'lineChart': chartConfig = { type: 'line', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], datasets: [{ label: 'Traffic', data: [65, 59, 80, 81, 56, 55], fill: false, borderColor: vibrantPalette[1], tension: 0.2, pointBackgroundColor: vibrantPalette[1], pointHoverRadius: 7 }] }, options: { ...commonChartOptions } }; break;
+                case 'doughnutChart': chartConfig = { type: 'doughnut', data: { labels: ['Tech', 'Healthcare', 'Finance', 'Retail'], datasets: [{ label: 'Market Share', data: [300, 150, 100, 50], backgroundColor: [vibrantPalette[0], vibrantPalette[1], vibrantPalette[2], vibrantPalette[3]], hoverOffset: 12 }] }, options: { ...commonChartOptions, plugins: { legend: { display: true, position: 'bottom' } } } }; break;
+                case 'scatterChart': chartConfig = { type: 'scatter', data: { datasets: [{ label: 'Ad Spend vs Revenue', data: [{x: 1, y: 5}, {x: 2, y: 7}, {x: 3, y: 6}, {x: 4, y: 10}, {x: 5, y: 12}, {x: 6, y: 11}], backgroundColor: vibrantPalette[2] }] }, options: { ...commonChartOptions, scales: { x: { type: 'linear', position: 'bottom' } } } }; break;
+                case 'waterfallChart': chartConfig = { type: 'bar', data: { labels: ['Start', 'Sales', 'Fees', 'Returns', 'Costs', 'End'], datasets: [{ label: 'Financial Flow', data: [[0, 200], [200, 350], [350, 420], [420, 380], [380, 250], [0, 250]], backgroundColor: [vibrantPalette[4], vibrantPalette[0], vibrantPalette[0], vibrantPalette[2], vibrantPalette[2], vibrantPalette[4]] }] }, options: { ...commonChartOptions, scales: { y: { beginAtZero: true } } } }; break;
+                case 'funnelChart': chartConfig = { type: 'bar', data: { labels: ['Visitors', 'Sign Ups', 'Purchases', 'Repeat'], datasets: [{ label: 'Sales Funnel', data: [5000, 2500, 1200, 400], backgroundColor: [vibrantPalette[0], vibrantPalette[1], vibrantPalette[2], vibrantPalette[3]] }] }, options: { ...commonChartOptions, indexAxis: 'y', scales: { x: { display: false }, y: { grid: { display: false } } } } }; break;
+            }
+            if(chartConfig) chartInstances[chartId] = new Chart(ctx, chartConfig);
+        }
+
+        function updateCarousel(targetSlideIndex, isInitial = false) {
+            const previousSlideIndex = currentSlide;
+            if (targetSlideIndex === previousSlideIndex && !isInitial) return;
+            
+            slides[previousSlideIndex].classList.add('exiting');
+            slides[previousSlideIndex].classList.remove('active');
+
+            slides[targetSlideIndex].classList.add('active');
+            slides[targetSlideIndex].classList.remove('exiting');
+            
+            setTimeout(() => {
+                if(!slides[previousSlideIndex].classList.contains('active')) {
+                    slides[previousSlideIndex].classList.remove('exiting');
+                }
+            }, 500);
+
+            currentSlide = targetSlideIndex;
+            updateIndicatorsAndProgress();
+            
+            const activeSlideElement = slides[currentSlide];
+            activeSlideElement.querySelectorAll('.counter').forEach(animateCountUp);
+            activeSlideElement.querySelectorAll('canvas').forEach(c => createChart(c.id));
+        }
+        
+        function createIndicators() {
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('indicator-dot');
+                dot.addEventListener('click', () => goToSlide(i));
+                indicatorContainer.appendChild(dot);
+            });
+        }
+        
+        function updateIndicatorsAndProgress() {
+            document.querySelectorAll('.indicator-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+        }
+
+        function goToSlide(n) { updateCarousel(n); }
+        function moveSlide(n) {
+            let newIndex = currentSlide + n;
+            if (newIndex >= slides.length) newIndex = 0;
+            if (newIndex < 0) newIndex = slides.length - 1;
+            updateCarousel(newIndex);
+        }
+
+        prevBtn.addEventListener('click', () => moveSlide(-1));
+        nextBtn.addEventListener('click', () => moveSlide(1));
+
+        createIndicators();
+        updateCarousel(0, true);
+    });
+</script>
+
+</body>
+</html>
