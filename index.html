@@ -115,17 +115,17 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            margin: 1.5rem auto 0 auto;
-            height: 320px;
+            max-width: 450px;
+            margin: 1rem auto 0 auto;
+            height: 200px; /* Reduced height */
         }
         h1 {
             background: linear-gradient(45deg, #006494, #00A6FB);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        h2 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 800; text-align: center; color: #006494; margin-bottom: 2rem; }
-        h3 { font-size: 1.5rem; font-weight: 700; color: #0582CA; margin-bottom: 1rem; }
+        h2 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 800; text-align: center; color: #006494; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.25rem; font-weight: 700; color: #0582CA; margin-bottom: 0.5rem; }
         .kpi-card {
             background-color: #ffffff;
             border-radius: 0.75rem;
@@ -190,13 +190,37 @@
             <!-- Slide 4: Chart Selection -->
             <div class="carousel-slide">
                  <h2>Choosing the Right Chart</h2>
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"><div><h3 class="text-center">Bar & Line Charts</h3><p class="text-gray-600 text-center mb-4">Use bars for comparing categories and lines for tracking trends over time.</p><div class="chart-container"><canvas id="barChart"></canvas></div><div class="chart-container mt-8"><canvas id="lineChart"></canvas></div></div><div><h3 class="text-center">Doughnut & Scatter Charts</h3><p class="text-gray-600 text-center mb-4">Use doughnuts for proportions and scatter plots to find correlations.</p><div class="chart-container"><canvas id="doughnutChart"></canvas></div><div class="chart-container mt-8"><canvas id="scatterChart"></canvas></div></div></div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 items-start">
+                     <div>
+                        <h3 class="text-center">Bar & Line Charts</h3>
+                        <p class="text-gray-600 text-center text-sm mb-2">Use bars for comparing categories and lines for tracking trends over time.</p>
+                        <div class="chart-container"><canvas id="barChart"></canvas></div>
+                        <div class="chart-container mt-2"><canvas id="lineChart"></canvas></div>
+                     </div>
+                     <div>
+                        <h3 class="text-center">Doughnut & Scatter Charts</h3>
+                        <p class="text-gray-600 text-center text-sm mb-2">Use doughnuts for proportions and scatter plots to find correlations.</p>
+                        <div class="chart-container"><canvas id="doughnutChart"></canvas></div>
+                        <div class="chart-container mt-2"><canvas id="scatterChart"></canvas></div>
+                     </div>
+                 </div>
             </div>
 
             <!-- Slide 5: Specialized Charts -->
             <div class="carousel-slide">
                 <h2>Visualizing Processes</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"><div><h3>Waterfall Chart</h3><p class="text-gray-600 mb-4">Illustrates the cumulative effect of sequential positive and negative values. Perfect for financial statements.</p><div class="chart-container h-80"><canvas id="waterfallChart"></canvas></div></div><div><h3>Funnel Chart</h3><p class="text-gray-600 mb-4">Shows the progressive reduction of data through sequential stages. Ideal for visualizing sales pipelines.</p><div class="chart-container h-80"><canvas id="funnelChart"></canvas></div></div></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3>Waterfall Chart</h3>
+                        <p class="text-gray-600 mb-4">Illustrates the cumulative effect of sequential positive and negative values. Perfect for financial statements.</p>
+                        <div class="chart-container h-80"><canvas id="waterfallChart"></canvas></div>
+                    </div>
+                    <div>
+                        <h3>Funnel Chart</h3>
+                        <p class="text-gray-600 mb-4">Shows the progressive reduction of data through sequential stages. Ideal for visualizing sales pipelines.</p>
+                        <div class="chart-container h-80"><canvas id="funnelChart"></canvas></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Slide 6: Dashboard Flow -->
