@@ -1,89 +1,66 @@
-Advanced Excel Data Visualization - Interactive Carousel
+# Advanced Excel Visualization - Interactive Carousel
 
-This project is an interactive, single-page infographic designed as a responsive carousel. It showcases the core principles of advanced data visualization, transforming a static guide into an engaging, animated narrative. The goal is to demonstrate both an understanding of effective data communication and the ability to implement a modern, dynamic front-end user experience. It's built to be a compelling portfolio piece, perfect for digital storytelling or as a standalone web presentation.
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Chart.js">
+</p>
 
-✨ Features
+<p align="center">
+  A sleek one-page infographic that transforms Excel data viz principles into an animated, interactive storytelling experience.
+</p>
 
-This project is packed with features designed to create an intuitive and visually appealing experience.
+---
 
-Interactive Carousel & Navigation
+## 🚀 Live Demo
 
-Smooth Transitions: Slides animate in and out with clean, modern transitions.
+Try it here:  
+**[https://tabitha-dev.github.io/Advanced-Excel-Visualization/](https://tabitha-dev.github.io/Advanced-Excel-Visualization/)**
 
-Multiple Controls: Navigate using previous/next buttons, clickable indicator dots, or keyboard arrow keys.
+---
 
-Progress Bar: A sleek progress bar at the top visually tracks the user's journey through the content.
+## 💡 About This Project
 
-Dynamic & Animated Charts
+This project turns static Excel data visualization concepts into a fully interactive front-end carousel. It’s a modern, animated walkthrough of key chart types and data communication principles.
 
-Chart.js Integration: Utilizes the powerful Chart.js library to render a variety of beautiful, animated charts.
+The entire experience is built with just **HTML, Tailwind CSS, JavaScript**, and **Chart.js**. No frameworks or build tools. Just open the file and go.
 
-Variety of Chart Types: Demonstrates the correct use case for multiple charts, including:
+---
 
-Bar & Column Charts
+## ✨ Key Features
 
-Line Charts
+* **🖱️ Interactive Carousel**  
+  Navigate with arrows, dots, or keyboard keys. Smooth slide animations and a built-in progress bar.
 
-Doughnut & Pie Charts
+* **📊 Dynamic Charts**  
+  Animated visuals using Chart.js. Includes bar, line, pie, scatter, waterfall, and funnel charts.
 
-Scatter Plots
+* **📈 Live KPIs**  
+  Key metrics count up as they scroll into view using the Intersection Observer API.
 
-Waterfall Charts
+* **📱 Responsive Layout**  
+  Optimized for all devices with Tailwind’s utility-first styling.
 
-Funnel Charts
+* **🧳 Fully Portable**  
+  One `index.html` file, no install needed. Works on any static host or directly in your browser.
 
-Engaging Animations: Charts animate into view, and KPI counters dynamically count up when they become visible, drawing the user's attention to key statistics.
+---
 
-Polished & Modern UI/UX
+## 🛠️ Tech Stack
 
-Responsive Design: Built with Tailwind CSS for a fully responsive layout that looks great on desktops, tablets, and mobile devices.
+- **HTML5** for structure  
+- **Tailwind CSS** for styling and layout  
+- **Vanilla JavaScript (ES6+)** for interactivity  
+- **Chart.js** for animated data visualization  
+- **Intersection Observer API** for scroll-triggered effects
 
-Crisp Visuals: Uses scalable SVG icons and diagrams for a sharp, high-quality aesthetic on all screens.
+---
 
-Hover Effects: Interactive elements provide visual feedback on hover, creating a more responsive feel.
+## ⚙️ Run Locally
 
-Portable & Self-Contained
+No setup needed. Just:
 
-Single-Page Application: The entire experience is contained within a single index.html file.
-
-No External Dependencies: Relies only on CDN-hosted libraries, making it highly portable and easy to deploy on any static hosting service.
-
-🛠️ Technical Implementation
-
-This project was built from the ground up using modern front-end technologies to create a performant and maintainable single-page application.
-
-HTML5: The core structure is built using semantic HTML5, ensuring accessibility and a logical document outline.
-
-Tailwind CSS: All styling, from the overall layout to individual component design, is handled by the utility-first framework Tailwind CSS. This allows for rapid development and a consistent design system. A small, embedded <style> block is used for carousel-specific transition logic.
-
-JavaScript (ES6+): The interactivity is powered by modern JavaScript.
-
-Carousel Logic: A custom JavaScript module manages the state of the carousel, including the current slide, navigation logic, progress bar updates, and indicator dot states. It's built to be efficient, only rendering and animating charts when they become visible.
-
-Chart.js: Charts are created and customized using the Chart.js library. Each chart is configured with specific options for responsiveness, custom tooltips, and engaging animations.
-
-Intersection Observer API: The "animate on scroll" effect for the KPI counters is implemented efficiently using the Intersection Observer API, which triggers the animation only when the element enters the viewport.
-
-🚀 How to Run Locally
-
-No complex build steps or dependencies are required. This project is designed to run directly in the browser.
-
-Clone the repository:
-
-git clone https://github.com/your-username/your-repository-name.git
-
-
-Navigate to the project directory:
-
-cd your-repository-name
-
-
-Open the file:
-
-Simply open the index.html file in a modern web browser like Chrome, Firefox, or Edge.
-
-📄 License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Created with care to demonstrate modern front-end development and data visualization principles.
+```bash
+git clone https://github.com/tabitha-dev/Advanced-Excel-Visualization.git
+cd Advanced-Excel-Visualization
